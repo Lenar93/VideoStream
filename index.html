@@ -4,33 +4,9 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <link rel="stylesheet" href="https://cdn.webrtc-experiment.com/style.css">
+    <link rel="stylesheet" href="css/style.css">
 
     <title>WebRTC test</title>
-
-   
-
-    <style>
-        video {
-            object-fit: fill;
-            width: 100%;
-        }
-        button,
-        input,
-        select {
-            font-weight: normal;
-            padding: 2px 4px;
-            text-decoration: none;
-            display: inline-block;
-            text-shadow: none;
-            font-size: 16px;
-            outline: none;
-        }
-        .make-center {
-            text-align: center;
-            padding: 5px 10px;
-        }
-    </style>
 </head>
 
 <body>
@@ -46,15 +22,15 @@
 
                 <br><br>
                 <label for="video-width">Video Width:</label>
-                <input id="video-width" value="600">
+                <input id="video-width" value="1280">
                 <br>
                 <label for="video-height">Video Height:</label>
-                <input id="video-height" value="600">
+                <input id="video-height" value="720">
 
                 <br><br>
                 <button id="btn-change-resolutions" disabled>Change Resolutions</button> 
 
-                <div id="room-urls" style="text-align: center;display: none;background: #F1EDED;margin: 15px -10px;border: 1px solid rgb(189, 189, 189);border-left: 0;border-right: 0;"></div>
+                <div id="room-urls"></div>
             </div>
 
             <div id="videos-container"></div>
@@ -65,9 +41,7 @@
         <script src="/dist/WebRtcRecorder.js"></script>
 
         <script>
-            // ......................................................
-            // .......................UI Code........................
-            // ......................................................
+            
             var listOfRecorders = {};
             document.getElementById('open-room').onclick = function() {
                 disableInputButtons();
@@ -115,15 +89,11 @@
                 });
                 document.getElementById('stop-record').disabled = true;
             };
-            // ......................................................
-            // ..................RTCMultiConnection Code.............
-            // ......................................................
+          
             var connection = new RTCMultiConnection();
-            // by default, socket.io server is assumed to be deployed on your own URL
-            //connection.socketURL = '/';
-            // comment-out below line if you do not have your own socket.io server
+       
             connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
-            connection.socketMessageEvent = 'change-resolutions-demo';
+            
             connection.session = {
                 audio: true,
                 video: true,
@@ -151,9 +121,7 @@
                 }
                 document.getElementById('btn-change-resolutions').disabled = false;
             };
-            // ......................................................
-            // ..................applyConstraints Code...................
-            // ......................................................
+            
             document.getElementById('btn-change-resolutions').onclick = function() {
                 this.disabled = true;
                 var width = parseInt(document.getElementById('video-width').value) || 1280;
@@ -219,9 +187,6 @@
                 document.getElementById('join-room').disabled = true;
                 document.getElementById('room-id').disabled = true;
             }
-            // ......................................................
-            // ......................Handling Room-ID................
-            // ......................................................
             function showRoomURL(roomid) {
                 var roomHashURL = '#' + roomid;
                 var roomQueryStringURL = '?roomid=' + roomid;
